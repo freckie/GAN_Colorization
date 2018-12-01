@@ -1,5 +1,5 @@
 # -- Freckie Included. --
-data/
+data/processed/
 .vscode/
 
 # Byte-compiled / optimized / DLL files
