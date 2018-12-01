@@ -1,5 +1,11 @@
 import torch
 import torch.nn as nn
+import torch.optim as optim
+import torch.nn.functional as F
+
+from PIL import Image
+from torch.autograd import Variable
+from torchvision import datasets, transforms
 
 
 class Discriminator(nn.Module):
@@ -7,7 +13,7 @@ class Discriminator(nn.Module):
         super(Discriminator, self).__init__()
 
         self.model = nn.Sequential(
-            nn.Conv2d(3*2, 64, kernel_size=4, stride=2, padding=1),
+            nn.Conv2d(3 + 3, 64, kernel_size=4, stride=2, padding=1),
             nn.LeakyReLU(0.2, inplace=True),
             nn.Conv2d(64, 128, kernel_size=4, stride=2, padding=1),
             nn.BatchNorm2d(128),
@@ -25,8 +31,8 @@ class Discriminator(nn.Module):
             nn.Sigmoid()
         )
 
-    def forward(self, x_real, x_fake):
-        out = torch.cat([x_real, x_fake], dim=1)
+    def forward(self, x_fake, x_real):
+        out = torch.cat([x_fake, x_real], dim=1)
         return self.model(out)
 
 
@@ -34,8 +40,8 @@ class Generator(nn.Module):
     def __init__(self):
         super(Generator, self).__init__()
 
-        # (3*256*256) -> (64*128*128)
-        self.conv1 = nn.Conv2d(3, 64, kernel_size=4, stride=2, padding=1)
+        # (1*256*256) -> (64*128*128)
+        self.conv1 = nn.Conv2d(1, 64, kernel_size=4, stride=2, padding=1)
 
         # (64*128*128) -> (128*64*64)
         self.conv2 = nn.Sequential(
