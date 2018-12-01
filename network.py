@@ -13,7 +13,7 @@ class Discriminator(nn.Module):
         super(Discriminator, self).__init__()
 
         self.model = nn.Sequential(
-            nn.Conv2d(3 + 3, 64, kernel_size=4, stride=2, padding=1),
+            nn.Conv2d(1 + 3, 64, kernel_size=4, stride=2, padding=1),
             nn.LeakyReLU(0.2, inplace=True),
             nn.Conv2d(64, 128, kernel_size=4, stride=2, padding=1),
             nn.BatchNorm2d(128),
@@ -31,8 +31,8 @@ class Discriminator(nn.Module):
             nn.Sigmoid()
         )
 
-    def forward(self, x_fake, x_real):
-        out = torch.cat([x_fake, x_real], dim=1)
+    def forward(self, x_grey, x_rgb):
+        out = torch.cat([x_grey, x_rgb], dim=1)
         return self.model(out)
 
 
