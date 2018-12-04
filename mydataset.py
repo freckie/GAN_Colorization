@@ -12,8 +12,8 @@ class MyDataset(data.Dataset):
         self.img_filenames = os.listdir(path)
 
     def __getitem__(self, index):
-        img_rgb = Image.open(self.path + '/{}_rgb.jpg'.format(index))
-        img_grey = Image.open(self.path + '/{}_grey.jpg'.format(index))
+        img_rgb = Image.open(self.path + '/{}_rgb.jpg'.format(index)).convert('RGB')
+        img_grey = Image.open(self.path + '/{}_grey.jpg'.format(index)).convert('L')
         tensor_rgb = self.transform(img_rgb)
         tensor_grey = self.transform(img_grey)
         # tensor_rgb = self.to_tensor(img_rgb)
@@ -22,4 +22,4 @@ class MyDataset(data.Dataset):
         return (tensor_grey, tensor_rgb)
 
     def __len__(self):
-        return len(self.img_filenames)
+        return int(len(self.img_filenames) / 2)
