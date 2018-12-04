@@ -16,8 +16,8 @@ class MyDataset(data.Dataset):
         img_grey = Image.open(self.path + '/{}_grey.jpg'.format(index)).convert('L')
         tensor_rgb = self.transform(img_rgb)
         tensor_grey = self.transform(img_grey)
-        # tensor_rgb = self.to_tensor(img_rgb)
-        # tensor_grey = self.to_tensor(img_grey)
+        img_rgb.close()
+        img_grey.close()
 
         return (tensor_grey, tensor_rgb)
 
