@@ -128,7 +128,7 @@ class Generator(nn.Module):
         self.deconv4 = nn.Sequential(
             nn.ReLU(),
             nn.ConvTranspose2d(512 * 2, 256, kernel_size=4, stride=2, padding=1),
-            nn.BatchNorm2d(512),
+            nn.BatchNorm2d(256),
             nn.Dropout(0.5)
         )
 
@@ -136,7 +136,7 @@ class Generator(nn.Module):
         self.deconv3 = nn.Sequential(
             nn.ReLU(),
             nn.ConvTranspose2d(256 * 2, 128, kernel_size=4, stride=2, padding=1),
-            nn.BatchNorm2d(512),
+            nn.BatchNorm2d(128),
             nn.Dropout(0.5)
         )
 
@@ -144,7 +144,7 @@ class Generator(nn.Module):
         self.deconv2 = nn.Sequential(
             nn.ReLU(),
             nn.ConvTranspose2d(128 * 2, 64, kernel_size=4, stride=2, padding=1),
-            nn.BatchNorm2d(512),
+            nn.BatchNorm2d(64),
             nn.Dropout(0.5)
         )
 
