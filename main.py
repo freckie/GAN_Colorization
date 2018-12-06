@@ -1,3 +1,5 @@
+# 참고 : https://github.com/taeoh-kim/Pytorch_Pix2Pix
+
 import torch
 import logging
 import torchvision
@@ -22,11 +24,11 @@ def denorm(x):
 
 
 def GAN_Loss(input_, is_real, criterion):
-    # 진짜 샘플
+    # 진짜 샘플 Loss 계산
     if is_real:
         tmp_tensor = torch.FloatTensor(input_.size()).fill_(1.0)
         rgbs = Variable(tmp_tensor, requires_grad=False)
-    # 가짜 샘플
+    # 가짜 샘플 Loss 계산
     else:
         tmp_tensor = torch.FloatTensor(input_.size()).fill_(0.0)
         rgbs = Variable(tmp_tensor, requires_grad=False)
@@ -90,6 +92,7 @@ if __name__ == '__main__':
             # ==== G 학습 ==== #
             model_G.zero_grad()
 
+            # 예측 후 Loss 계산
             pred_fake = model_D(grey, fake_rgb)
             loss_G_GAN = GAN_Loss(pred_fake, True, criterion)
             loss_G_L1 = criterionL1(fake_rgb, real_rgb)
@@ -103,7 +106,7 @@ if __name__ == '__main__':
             logger.info('Epoch [{}/{}] IDX [{}/{}] D_Real_Loss: {:.6f}, D_Fake_Loss: {:.6f}, G_Loss: {:.6f}, G_L1_Loss: {:.6f}'.format(
                 epoch + 1, epochs, idx + 1, len(data_loader), loss_D_real.data[0], loss_D_fake.data[0], loss_G_GAN.data[0], loss_G_L1.data[0]))
 
-            # IDX 10번마다 모델 저장 및 샘플 생성
+            # IDX 10번마다 생성 모델 저장 및 샘플 생성
             if idx % 10 == 0:
                 torch.save(model_G.state_dict(), './generator.pth')
                 # G(grey)
